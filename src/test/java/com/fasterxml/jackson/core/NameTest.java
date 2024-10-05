@@ -1,4 +1,4 @@
-package com.example;
+package com.fasterxml.jackson.core.sym;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
