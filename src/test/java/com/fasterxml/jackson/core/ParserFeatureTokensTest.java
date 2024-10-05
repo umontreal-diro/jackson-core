@@ -8,8 +8,7 @@ import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ParserFeatureTokensTest
-        extends JUnit5TestBase
+class ParserFeatureTokensTest extends JUnit5TestBase
 {
     static class TestParser extends ParserMinimalBase
     {
@@ -146,16 +145,23 @@ class ParserFeatureTokensTest
     @Test
     void parserTestToken() throws Exception
     {
-//        try (JsonParser p = new TestParser()) {
-//            for (JsonParser.Feature feat : JsonParser.Feature.values()) {
-//                assertEquals(feat.enabledByDefault(), p.isEnabled(feat),
-//                        "Feature "+feat);
-//            }
-//        }
         try (JsonParser p = new TestParser()) {
             p.nextToken();
             assertEquals( 10,p.getValueAsInt(10));
+            assertEquals( 10,p.getValueAsInt(10));
+
         }
     }
+
+
+//    void reportInvalidEOFInValueTest() throws Exception
+//    {
+//        try (JsonParser p = new TestParser()) {
+//            p.nextToken();
+//            assertEquals(p._repo ,);
+//
+//
+//        }
+//    }
 
 }
