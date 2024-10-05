@@ -1,4 +1,4 @@
-name: Maven tests
+name: Maven tests with JaCoCo Coverage
 
 on:
   pull_request:
@@ -7,25 +7,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      # Step 1: Check out the code from the repository
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up JDK 17 for the environment
       - name: Set up JDK 17
-        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Maven tests
-        run: mvn verify
+      # Step 3: Run Maven tests and generate JaCoCo reports
+      - name: Run Maven tests and generate JaCoCo report
+        run: mvn clean verify
 
+      # Step 4: Get JaCoCo Coverage
       - name: Get JaCoCo Coverage
-        id: coverage  
+        id: coverage
         run: |
-          coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
+          # Extract coverage percentage from the JaCoCo CSV report
+          coverage=$(grep -Eo 'INSTRUCTION.*' target/site/jacoco/jacoco.csv | awk -F, '{total+=$2;missed+=$3} END {print 100*(total-missed)/total}')
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
+          echo "Coverage: $coverage%"
 
-      - name: Fail if coverage has not improved.
+      # Step 5: Fail if coverage has not improved
+      - name: Fail if coverage has not improved
         run: |
           coverage=$COVERAGE
           threshold=81.58
@@ -35,3 +44,10 @@ jobs:
           else
             echo "New coverage: $coverage%"
           fi
+
+      # Step 6: Upload JaCoCo coverage report as an artifact
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
