@@ -389,6 +389,10 @@ public abstract class ParserMinimalBase extends JsonParser
     /**********************************************************
      */
 
+    /*
+        TODO A TESTER !!!!!!!
+        si t != NULL +
+     */
     @Override
     public boolean getValueAsBoolean(boolean defaultValue) throws IOException
     {
@@ -436,6 +440,9 @@ public abstract class ParserMinimalBase extends JsonParser
         return getValueAsInt(0);
     }
 
+    /*
+        TODO
+     */
     @Override
     public int getValueAsInt(int defaultValue) throws IOException
     {
@@ -618,11 +625,17 @@ public abstract class ParserMinimalBase extends JsonParser
         throw new InputCoercionException(this, msg, inputType, targetType);
     }
 
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected void _reportInvalidEOF() throws JsonParseException {
         _reportInvalidEOF(" in "+_currToken, _currToken);
     }
 
     // @since 2.8
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected void _reportInvalidEOFInValue(JsonToken type) throws JsonParseException {
         String msg;
         if (type == JsonToken.VALUE_STRING) {
@@ -637,6 +650,9 @@ public abstract class ParserMinimalBase extends JsonParser
     }
 
     // @since 2.8
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected void _reportInvalidEOF(String msg, JsonToken currToken) throws JsonParseException {
         throw new JsonEOFException(this, currToken, "Unexpected end-of-input"+msg);
     }
@@ -655,6 +671,9 @@ public abstract class ParserMinimalBase extends JsonParser
         throw _constructReadException("Invalid numeric value: "+msg);
     }
 
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected void _reportMissingRootWS(int ch) throws JsonParseException {
         _reportUnexpectedChar(ch, "Expected space separating root-level values");
     }
@@ -718,6 +737,9 @@ public abstract class ParserMinimalBase extends JsonParser
     }
 
     // @since 2.9.8
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected String _longNumberDesc(String rawNum) {
         int rawLen = rawNum.length();
         if (rawLen < 1000) {
@@ -830,6 +852,9 @@ public abstract class ParserMinimalBase extends JsonParser
     }
 
     // @since 2.17
+    /*
+        TODO A TESTER !!!!!!!
+     */
     protected final <T> T _throwInternalReturnAny() {
         return VersionUtil.throwInternalReturnAny();
     }
