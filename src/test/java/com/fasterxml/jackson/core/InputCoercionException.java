@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for InputCoercionException, ensuring that the exception is correctly
- * instantiated and that its methods function as expected.
+ * instantiated and that its methods function as expected. 
  */
 class InputCoercionExceptionTest {
 
