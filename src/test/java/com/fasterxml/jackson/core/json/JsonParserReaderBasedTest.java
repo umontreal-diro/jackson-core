@@ -3,17 +3,10 @@ package com.fasterxml.jackson.core.json;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.io.JsonEOFException;
-import com.fasterxml.jackson.core.io.SerializedString;
-import com.fasterxml.jackson.core.testsupport.MockDataInput;
+import com.fasterxml.jackson.core.json.async.NonBlockingUtf8JsonParserBase;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,10 +34,6 @@ public class JsonParserReaderBasedTest {
     }
 
 
-    public void initJsonParserClosedCaseTest(String parserName, JsonParser parser) {
-        this.parser = parser;
-    }
-
     @Test
     void ReaderBasedJsonParserEOFTest(){
         boolean wentTroughtExpectedError = false;
@@ -60,16 +49,5 @@ public class JsonParserReaderBasedTest {
             throw new RuntimeException(e);
         }
         assertTrue(wentTroughtExpectedError);
-    }
-
-
-
-    private static Collection<Object[]> closeParsers(JsonParser... parsersToClose) throws IOException {
-        List<Object[]> list = new ArrayList<>();
-        for (JsonParser p : parsersToClose) {
-            p.close();
-            list.add(new Object[] { p.getClass().getSimpleName(), p });
-        }
-        return list;
     }
 }
