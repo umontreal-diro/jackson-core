@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import com.fasterxml.jackson.core.io.IOContext;
 
