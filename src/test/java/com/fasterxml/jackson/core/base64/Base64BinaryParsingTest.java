@@ -16,7 +16,6 @@ class Base64BinaryParsingTest
     @Test
     void base64UsingInputStream() throws Exception
     {
-        System.out.println("modification");
         _testBase64Text(MODE_INPUT_STREAM);
         _testBase64Text(MODE_INPUT_STREAM_THROTTLED);
         _testBase64Text(MODE_DATA_INPUT);
