@@ -30,6 +30,9 @@
   <properties>
     <java.version>1.8</java.version>
     <version.plugin.surefire>3.0.0-M5</version.plugin.surefire>
+    <version.plugin.jacoco>0.8.8</version.plugin.jacoco> <!-- 添加了 JaCoCo 的版本 -->
+    <version.plugin.shade>3.2.4</version.plugin.shade> <!-- 添加了 Maven Shade 插件的版本 -->
+    <version.assertj>3.20.2</version.assertj> <!-- 添加 AssertJ 版本 -->
     <project.build.outputTimestamp>2024-02-27T01:34:44Z</project.build.outputTimestamp>
   </properties>
 
@@ -83,6 +86,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <version>${version.assertj}</version> <!-- 使用 AssertJ 版本 -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -94,6 +98,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${version.plugin.jacoco}</version> <!-- 使用 JaCoCo 版本 -->
         <executions>
           <execution>
             <goals>
@@ -127,6 +132,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>${version.plugin.shade}</version> <!-- 使用 Shade 插件版本 -->
         <executions>
           <execution>
             <id>shade-jackson-core</id>
