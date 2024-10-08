@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion> 
   <parent>
     <groupId>com.fasterxml.jackson</groupId>
@@ -14,11 +12,37 @@
   <version>2.18.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Core Jackson processing abstractions (aka Streaming API), implementation for JSON</description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <inceptionYear>2008</inceptionYear>
+  <url>https://github.com/FasterXML/jackson-core</url>
+  <scm>
+    <connection>scm:git:git@github.com:FasterXML/jackson-core.git</connection>
+    <developerConnection>scm:git:git@github.com:FasterXML/jackson-core.git</developerConnection>
+    <url>https://github.com/FasterXML/jackson-core</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
     <version.plugin.surefire>3.0.0-M5</version.plugin.surefire>
     <version.plugin.jacoco>0.8.8</version.plugin.jacoco>
     <osgi.export>com.fasterxml.jackson.core;version=${project.version}, com.fasterxml.jackson.core.*;version=${project.version}</osgi.export>
+  
+    <version.android.sdk>26</version.android.sdk>
+    <version.android.sdk.signature>0.5.1</version.android.sdk.signature>
+    <version.plugin.animal-sniffer>1.23</version.plugin.animal-sniffer>
+
+    <osgi.import>!ch.randelshofer.fastdoubleparser, *</osgi.import>
+
+    <packageVersion.dir>com/fasterxml/jackson/core/json</packageVersion.dir>
+    <packageVersion.package>${project.groupId}.json</packageVersion.package>
+
+    <project.build.outputTimestamp>2024-02-27T01:34:44Z</project.build.outputTimestamp>
   </properties>
 
   <repositories>
@@ -28,6 +52,13 @@
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
       <releases><enabled>false</enabled></releases>
       <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+    <repository>
+      <id>gradle-plugins-repo</id>
+      <name>Gradle Plugins Repository</name>
+      <url>https://plugins.gradle.org/m2/</url> <!-- 新添加的仓库 -->
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
     </repository>
   </repositories>
 
@@ -67,6 +98,103 @@
           </excludes>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+      </plugin>
+
+      <!-- Enforcer plugin to validate properties -->
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-properties</id>
+            <phase>validate</phase>
+            <goals><goal>enforce</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Moditect plugin for JDK9+ module info -->
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+      </plugin>
+
+      <!-- Shade plugin for creating a minimized jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+          <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
+          <minimizeJar>true</minimizeJar>
+        </configuration>
+        <executions>
+          <execution>
+            <id>shade-jackson-core</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Gradle module metadata plugin -->
+      <plugin>
+        <groupId>de.jjohannes</groupId>
+        <artifactId>gradle-module-metadata-maven-plugin</artifactId>
+       
+        <configuration>
+          <removedDependencies>
+            <dependency>
+              <groupId>ch.randelshofer</groupId>
+              <artifactId>fastdoubleparser</artifactId>
+            </dependency>
+          </removedDependencies>
+        </configuration>
+      </plugin>
+
+      <!-- Jar plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Multi-Release>true</Multi-Release>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <!-- Replace plugin (disable if PackageVersion.java.in is missing) -->
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <configuration>
+        <skip>true</skip>
+        </configuration>
+      </plugin>
+
+
+      <!-- Animal Sniffer plugin for Android compatibility -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>${version.plugin.animal-sniffer}</version>
+        <configuration>
+          <signature>
+            <groupId>com.toasttab.android</groupId>
+            <artifactId>gummy-bears-api-${version.android.sdk}</artifactId>
+            <version>${version.android.sdk.signature}</version>
+          </signature>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -76,23 +204,28 @@
       <artifactId>fastdoubleparser</artifactId>
       <version>1.0.0</version>
     </dependency>
-     <!-- Java Faker -->
+    
+    <!-- Java Faker -->
     <dependency>
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
       <version>1.0.2</version>
     </dependency>
  
+    <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
+    
+    <!-- Jackson Databind -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.15.0</version>
     </dependency>
+
+    <!-- AssertJ for testing -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
