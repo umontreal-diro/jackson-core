@@ -165,22 +165,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-
-      <!-- Gradle module metadata plugin -->
-      <plugin>
-        <groupId>de.jjohannes</groupId>
-        <artifactId>gradle-module-metadata-maven-plugin</artifactId>
-       
-        <configuration>
-          <removedDependencies>
-            <dependency>
-              <groupId>ch.randelshofer</groupId>
-              <artifactId>fastdoubleparser</artifactId>
-            </dependency>
-          </removedDependencies>
-        </configuration>
-      </plugin>
+      </plugin>     
 
       <!-- Jar plugin -->
       <plugin>
