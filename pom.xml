@@ -1,26 +1,39 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion> 
-  <parent>
-    <groupId>com.fasterxml.jackson</groupId>
-    <artifactId>jackson-base</artifactId>
-    <version>2.18.0-SNAPSHOT</version>
-  </parent>
   
-  <groupId>com.fasterxml.jackson.core</groupId>
-  <artifactId>jackson-core</artifactId>
-  <name>Jackson-core</name>
-  <version>2.18.0-SNAPSHOT</version>
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.example</groupId>
+  <artifactId>myproject</artifactId>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <description>Core Jackson processing abstractions (aka Streaming API), implementation for JSON</description>
+  <name>MyProject</name>
+  <description>Core Jackson processing abstractions (aka Streaming API), implementation for JSON and additional features</description>
+  <url>http://maven.apache.org</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:FasterXML/jackson-core.git</connection>
+    <developerConnection>scm:git:git@github.com:FasterXML/jackson-core.git</developerConnection>
+    <url>https://github.com/FasterXML/jackson-core</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
+    <java.version>1.8</java.version>
     <version.plugin.surefire>3.0.0-M5</version.plugin.surefire>
-    <version.plugin.jacoco>0.8.8</version.plugin.jacoco>
-    <osgi.export>com.fasterxml.jackson.core;version=${project.version}, com.fasterxml.jackson.core.*;version=${project.version}</osgi.export>
+    <project.build.outputTimestamp>2024-02-27T01:34:44Z</project.build.outputTimestamp>
   </properties>
 
+  <!-- Repositories for dependencies -->
   <repositories>
     <repository>
       <id>sonatype-nexus-snapshots</id>
@@ -31,14 +44,56 @@
     </repository>
   </repositories>
 
+  <!-- Dependencies -->
+  <dependencies>
+    <!-- Core Jackson dependencies -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.15.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.0</version>
+    </dependency>
+
+    <!-- Java Faker for test data generation -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <!-- JUnit Jupiter for testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.7.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.7.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- AssertJ for fluent assertions -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Build plugins -->
   <build>
     <plugins>
-
-      <!-- Jacoco plugin for code coverage -->
+      <!-- JaCoCo for code coverage -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${version.plugin.jacoco}</version>
         <executions>
           <execution>
             <goals>
@@ -55,47 +110,38 @@
         </executions>
       </plugin>
 
-      <!-- Surefire plugin for running tests -->
+      <!-- Maven Surefire plugin for running tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <redirectTestOutputToFile>false</redirectTestOutputToFile>
           <excludes>
             <exclude>**/failing/**/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>
+
+      <!-- Maven Shade plugin for creating shaded JARs -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>shade-jackson-core</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>ch.randelshofer</groupId>
-      <artifactId>fastdoubleparser</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <version>1.0.2</version>
-   </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.15.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>
