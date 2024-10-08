@@ -8,6 +8,8 @@ import java.util.Iterator;
 import com.fasterxml.jackson.core.*;
 
 import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonParser.NumberType;
 import com.fasterxml.jackson.core.JsonParser.NumberTypeFP;
 import com.fasterxml.jackson.core.type.ResolvedType;
@@ -488,4 +490,42 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         assertSame(tree, codec.treeWritten);
         assertSame(pojo, codec.pojoWritten);
     }
+
+    /**
+     * Ce test nous assure que le méthode disable change l'état de delegate correctement
+     * pour tous les features. Dans ce cas, nous avons testé avec AUTO_CLOSE_SOURCE
+     */
+
+    @Test
+    void enableFeatureTest() throws IOException {
+
+        // arrange
+        JsonFactory jsonFactory = new JsonFactory();
+        JsonParser parser = jsonFactory.createParser("{\"field\": \"value\"}");
+        try (JsonParserDelegate delegate = new JsonParserDelegate(parser)) {
+            // act
+            delegate.enable(Feature.AUTO_CLOSE_SOURCE); 
+            // assert
+            assertTrue(delegate.isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE));
+        }   
+    }
+
+    /**
+     * Ce test nous assure que le méthode disable change l'état de delegate correctement
+     * pour tous les features. Dans ce cas, nous avons testé avec AUTO_CLOSE_SOURCE
+     */
+
+    @Test
+    void disableFeatureTest() throws IOException {
+
+        // arrange
+        JsonFactory jsonFactory = new JsonFactory();
+        JsonParser parser = jsonFactory.createParser("{\"field\": \"value\"}");
+        try (JsonParserDelegate delegate = new JsonParserDelegate(parser)) {
+            // act
+            delegate.disable(Feature.AUTO_CLOSE_SOURCE); 
+            // assert
+            assertFalse(delegate.isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE));
+        }  
+    }    
 }

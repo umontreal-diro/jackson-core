@@ -45,7 +45,7 @@ public class UTF8JsonGenerator
     /**
      * Underlying output stream used for writing JSON content.
      */
-    final protected OutputStream _outputStream;
+    public final OutputStream _outputStream;
 
     /**
      * Character used for quoting JSON Object property names

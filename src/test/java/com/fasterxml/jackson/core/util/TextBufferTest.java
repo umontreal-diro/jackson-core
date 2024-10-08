@@ -241,7 +241,6 @@ class TextBufferTest
      * Ce test vérifie que l'opération d'expansion de segment de TextBuffer fonctionne
      * correctement et que le buffer peut gérer des besoins de mémoire croissants
      */
-    /* 
     @Test
     void testExpandCurrentSegment() throws Exception {
         
@@ -254,5 +253,5 @@ class TextBufferTest
         // assert
         assertNotNull(resulting_segment);
         assertTrue(resulting_segment.length >= min_size);
-    }*/
+    }
 }

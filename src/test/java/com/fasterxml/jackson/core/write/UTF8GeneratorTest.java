@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.filter.FilteringGeneratorDelegate;
 import com.fasterxml.jackson.core.filter.JsonPointerBasedFilter;
 import com.fasterxml.jackson.core.filter.TokenFilter.Inclusion;
 import com.fasterxml.jackson.core.io.IOContext;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.core.json.UTF8JsonGenerator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -153,4 +154,72 @@ class UTF8GeneratorTest extends JUnit5TestBase
         assertNull(p.nextToken());
         p.close();
     }
+
+    /*
+     * Ce test verifie que le constructor de UTF8JsonGenerator initialise correctement les proprietés les plus importants 
+     * a partir des paramètres données.
+     */
+    @Test
+    void testUTF8JsonGeneratorConstructor() throws Exception {
+        // arrange
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        IOContext ctxt = testIOContext();
+        int outputOffset = 0;
+        String test = "testing!";
+        byte[] buffer = ctxt.allocWriteEncodingBuffer();
+
+        // act
+        JsonGenerator generator = new UTF8JsonGenerator(ctxt, 0, null, output, '"', buffer, outputOffset, true);
+        generator.writeString(test);
+        generator.flush();
+        generator.close();
+        JsonParser parser = JSON_F.createParser(output.toByteArray());
+
+        // assert
+        assertToken(JsonToken.VALUE_STRING, parser.nextToken());
+        assertEquals(test, parser.getText());
+        assertNull(parser.nextToken());
+        parser.close();
+        assertEquals(generator.getOutputBuffered(), outputOffset);
+     }
+
+    /*
+     * Ce test vérifique que writeRaw() ne parse pas un charactère invalide comme text. 
+     */
+    
+    @Test
+    void writeRawInvalidCharTest() throws Exception
+    {
+        // arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator generator = JSON_F.createGenerator(bytes);
+        String test = "ã"; // comme une pauvre brésilienne c'est dommage que ã ne soit pas valide :(
+        // act
+        generator.writeRaw(test.charAt(0));
+        generator.flush();
+        generator.close();
+        // assert
+        JsonParser parser = JSON_F.createParser(bytes.toByteArray());
+        assertEquals(null, parser.getText());
+    }
+
+    /*
+     * Ce test vérifique que writeRaw() ne parse pas un charactère invalide dans un array comme text. 
+     */
+    @Test
+    void writeRawInvalidArrayTest() throws Exception
+    {
+        // arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator generator = JSON_F.createGenerator(bytes);
+        String test = "ã test õ"; 
+        // act
+        generator.writeRaw(test.toCharArray(),0,8);
+        generator.flush();
+        generator.close();
+        // assert
+        JsonParser parser = JSON_F.createParser(bytes.toByteArray());
+        assertEquals(null, parser.getText());
+    }
+    
 }
