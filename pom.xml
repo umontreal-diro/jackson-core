@@ -1,37 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.mvnrepository.com/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- 父项目配置 -->
   <parent>
     <groupId>com.fasterxml.jackson</groupId>
     <artifactId>jackson-base</artifactId>
     <version>2.18.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.example</groupId>
-  <artifactId>myproject</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-core</artifactId>
+  <version>2.18.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>MyProject</name>
-  <description>Core Jackson processing abstractions (Streaming API) with additional features.</description>
-  <url>http://maven.apache.org</url>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:git@github.com:FasterXML/jackson-core.git</connection>
-    <developerConnection>scm:git:git@github.com:FasterXML/jackson-core.git</developerConnection>
-    <url>https://github.com/FasterXML/jackson-core</url>
-    <tag>HEAD</tag>
-  </scm>
+  <name>Jackson-core</name>
 
   <properties>
     <java.version>1.8</java.version>
@@ -52,7 +34,6 @@
     </repository>
   </repositories>
 
-  <!-- 合并的依赖项 -->
   <dependencies>
     <!-- Core Jackson dependencies -->
     <dependency>
@@ -64,6 +45,13 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.15.0</version>
+    </dependency>
+
+    <!-- fastdoubleparser -->
+    <dependency>
+      <groupId>ch.randelshofer</groupId>
+      <artifactId>fastdoubleparser</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
     <!-- 测试相关依赖 -->
@@ -100,7 +88,6 @@
     </dependency>
   </dependencies>
 
-  <!-- 合并的插件 -->
   <build>
     <plugins>
 
@@ -158,7 +145,7 @@
         </executions>
       </plugin>
 
-      <!-- Deploy 插件保留 -->
+      <!-- Deploy 插件 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
