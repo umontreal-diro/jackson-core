@@ -1,104 +1,100 @@
-package com.example;
+package com.fasterxml.jackson.core.sym;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;  // 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.github.javafaker.Faker;
+import java.util.Arrays;
 
 /**
- * Classe de test pour la classe {@link NameN}.
- * 
- * Intention:
- * Ce fichier de test a pour but de valider le comportement de la classe `NameN`
- * en utilisant des données de test générées dynamiquement avec la bibliothèque `java-faker`.
- * Cela permet d'améliorer la couverture des tests en générant des données aléatoires
- * tout en garantissant la non-utilisation de données sensibles en QA.
+ * Generic implementation of PName used for "long" names, where long
+ * means that its byte (UTF-8) representation is 13 bytes or more.
  */
-public class NameNTest {
+public final class NameN extends Name
+{
+    private final int q1, q2, q3, q4; // first four quads
+    private final int qlen; // total number of quads (4 + q.length)
+    private final int[] q;
 
-    private static final Faker faker = new Faker();  // Création d'une instance de Faker
-    private String randomName;
-    private int randomHashCode;
-    private int[] quads;
-
-    private NameN nameN;
-
-    /**
-     * Initialisation avant chaque test
-     * 
-     * Arrange: Génère un nom aléatoire et un tableau de quads pour tester les différentes méthodes de NameN
-     */
-    @BeforeEach
-    public void setUp() {
-        // Arrange : Génération de données de test aléatoires
-        randomName = faker.name().fullName();  // Utilisation de Faker pour générer un nom aléatoire
-        randomHashCode = randomName.hashCode();
-        quads = new int[]{1, 2, 3, 4, 5, 6, 7, 8};  // Tableau de quads pour le test
-
-        // Act : Construction de l'objet NameN à tester
-        nameN = NameN.construct(randomName, randomHashCode, quads, quads.length);
+    NameN(String name, int hash, int q1, int q2, int q3, int q4,
+            int[] quads, int quadLen) {
+        super(name, hash);
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        q = quads;
+        qlen = quadLen;
     }
 
-    /**
-     * Test: Comparer NameN avec un seul quad
-     * 
-     * AAA: Test pour garantir qu'un seul quad ne correspond pas à NameN
-     */
-    @Test
-    public void testEqualsSingleQuad() {
-        // Act & Assert : Le tableau d'une longueur différente ne devrait pas correspondre
-        assertFalse(nameN.equals(1), "Un seul quad ne devrait pas correspondre à NameN.");
+    public static NameN construct(String name, int hash, int[] q, int qlen)
+    {
+        /* We have specialized implementations for shorter
+         * names, so let's not allow runt instances here
+         */
+        if (qlen < 4) {
+            throw new IllegalArgumentException();
+        }
+        int q1 = q[0];
+        int q2 = q[1];
+        int q3 = q[2];
+        int q4 = q[3];
+
+        int rem = qlen - 4;
+
+        int[] buf;
+
+        if (rem > 0) {
+            buf = Arrays.copyOfRange(q, 4, qlen);
+        } else {
+            buf = null;
+        }
+        return new NameN(name, hash, q1, q2, q3, q4, buf, qlen);
+
     }
 
-    /**
-     * Test: Comparer NameN avec deux quads
-     * 
-     * AAA: Test pour garantir que deux quads ne correspondent pas à NameN
-     */
-    @Test
-    public void testEqualsTwoQuads() {
-        // Act & Assert : Deux quads ne devraient pas correspondre
-        assertFalse(nameN.equals(1, 2), "Deux quads ne devraient pas correspondre à NameN.");
+    // Implies quad length == 1, never matches
+    @Override
+    public boolean equals(int quad) { return false; }
+
+    // Implies quad length == 2, never matches
+    @Override
+    public boolean equals(int quad1, int quad2) { return false; }
+
+    // Implies quad length == 3, never matches
+    @Override
+    public boolean equals(int quad1, int quad2, int quad3) { return false; }
+
+    @Override
+    public boolean equals(int[] quads, int len) {
+        if (len != qlen) { return false; }
+
+        // Will always have >= 4 quads, can unroll
+        if (quads[0] != q1) return false;
+        if (quads[1] != q2) return false;
+        if (quads[2] != q3) return false;
+        if (quads[3] != q4) return false;
+
+        switch (len) {
+        default:
+            return _equals2(quads);
+        case 8:
+            if (quads[7] != q[3]) return false;
+        case 7:
+            if (quads[6] != q[2]) return false;
+        case 6:
+            if (quads[5] != q[1]) return false;
+        case 5:
+            if (quads[4] != q[0]) return false;
+        case 4:
+        }
+        return true;
     }
 
-    /**
-     * Test: Comparer NameN avec trois quads
-     * 
-     * AAA: Test pour garantir que trois quads ne correspondent pas à NameN
-     */
-    @Test
-    public void testEqualsThreeQuads() {
-        // Act & Assert : Trois quads ne devraient pas correspondre
-        assertFalse(nameN.equals(1, 2, 3), "Trois quads ne devraient pas correspondre à NameN.");
+    private final boolean _equals2(int[] quads)
+    {
+        final int end = qlen-4;
+        for (int i = 0; i < end; ++i) {
+            if (quads[i+4] != q[i]) {
+                return false;
+            }
+        }
+        return true;
     }
-
-    /**
-     * Test: Comparer NameN avec un tableau de quads qui correspond
-     * 
-     * Oracle: Le tableau de quads généré est celui qui doit être testé. Si le test échoue,
-     * cela signifie que l'objet NameN ne correspond pas correctement.
-     */
-    @Test
-    public void testEqualsQuadArrayMatching() {
-        // Act & Assert : Un tableau de quads correspondant devrait être égal
-        assertTrue(nameN.equals(quads, quads.length), "Le tableau de quads devrait correspondre à NameN.");
-    }
-
-    /**
-     * Test: Comparer NameN avec un tableau de quads non correspondant
-     * 
-     * AAA & Oracle: Utilisation de quads non correspondants pour s'assurer que NameN n'y correspond pas.
-     */
-    @Test
-    public void testEqualsQuadArrayNonMatching() {
-        // Arrange : Créer un tableau de quads différent
-        int[] nonMatchingQuads = {9, 10, 11, 12, 13, 14, 15, 16};
-
-        // Act & Assert : Un tableau de quads différent ne devrait pas correspondre
-        assertFalse(nameN.equals(nonMatchingQuads, nonMatchingQuads.length), "Le tableau de quads ne devrait pas correspondre à NameN.");
-    }
-
-
 }
