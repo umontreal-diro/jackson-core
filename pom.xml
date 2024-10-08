@@ -1,15 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.mvnrepository.com/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
+  <!-- 父项目配置 -->
+  <parent>
+    <groupId>com.fasterxml.jackson</groupId>
+    <artifactId>jackson-base</artifactId>
+    <version>2.18.0-SNAPSHOT</version>
+  </parent>
+
   <groupId>com.example</groupId>
   <artifactId>myproject</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>MyProject</name>
-  <description>Core Jackson processing abstractions (aka Streaming API), implementation for JSON and additional features</description>
+  <description>Core Jackson processing abstractions (Streaming API) with additional features.</description>
   <url>http://maven.apache.org</url>
 
   <licenses>
@@ -19,7 +25,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <scm>
     <connection>scm:git:git@github.com:FasterXML/jackson-core.git</connection>
     <developerConnection>scm:git:git@github.com:FasterXML/jackson-core.git</developerConnection>
@@ -30,13 +36,12 @@
   <properties>
     <java.version>1.8</java.version>
     <version.plugin.surefire>3.0.0-M5</version.plugin.surefire>
-    <version.plugin.jacoco>0.8.8</version.plugin.jacoco> <!-- 添加了 JaCoCo 的版本 -->
-    <version.plugin.shade>3.2.4</version.plugin.shade> <!-- 添加了 Maven Shade 插件的版本 -->
-    <version.assertj>3.20.2</version.assertj> <!-- 添加 AssertJ 版本 -->
+    <version.plugin.jacoco>0.8.8</version.plugin.jacoco>
+    <version.plugin.shade>3.2.4</version.plugin.shade>
+    <version.assertj>3.20.2</version.assertj>
     <project.build.outputTimestamp>2024-02-27T01:34:44Z</project.build.outputTimestamp>
   </properties>
 
-  <!-- Repositories for dependencies -->
   <repositories>
     <repository>
       <id>sonatype-nexus-snapshots</id>
@@ -47,7 +52,7 @@
     </repository>
   </repositories>
 
-  <!-- Dependencies -->
+  <!-- 合并的依赖项 -->
   <dependencies>
     <!-- Core Jackson dependencies -->
     <dependency>
@@ -61,14 +66,13 @@
       <version>2.15.0</version>
     </dependency>
 
-    <!-- Java Faker for test data generation -->
+    <!-- 测试相关依赖 -->
     <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <version>1.0.2</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
     </dependency>
-
-    <!-- JUnit Jupiter for testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -81,24 +85,30 @@
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- AssertJ for fluent assertions -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${version.assertj}</version> <!-- 使用 AssertJ 版本 -->
+      <version>${version.assertj}</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Java Faker -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
     </dependency>
   </dependencies>
 
-  <!-- Build plugins -->
+  <!-- 合并的插件 -->
   <build>
     <plugins>
+
       <!-- JaCoCo for code coverage -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${version.plugin.jacoco}</version> <!-- 使用 JaCoCo 版本 -->
+        <version>${version.plugin.jacoco}</version>
         <executions>
           <execution>
             <goals>
@@ -132,7 +142,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>${version.plugin.shade}</version> <!-- 使用 Shade 插件版本 -->
+        <version>${version.plugin.shade}</version>
         <executions>
           <execution>
             <id>shade-jackson-core</id>
@@ -147,7 +157,13 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Deploy 插件保留 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+      </plugin>
+
     </plugins>
   </build>
-
 </project>
