@@ -1,4 +1,15 @@
-Mehtab-Ali Rajput (2025138) & Haoran Sun (20260543)
+### Mehtab-Ali Rajput (2025138) & Haoran Sun (20260543)
+
+### Coverage Avant
+
+<img src="https://github.com/TibbySHR/jackson-core-tests/blob/2.18/images/coverage-avant.jpg"/>
+
+
+### Coverage Apres
+
+<img src="https://github.com/TibbySHR/jackson-core-tests/blob/2.18/images/coverage-apres.jpg"/>
+
+
 
 # Test 1 skipChildren():
 
@@ -47,7 +58,7 @@ Ce test s'assure que la méthode dans ByteArrayBuilder size donne le nombre glob
 
 # Test 4 JsonGenrator enable():
 
-This test checks if the functions enable() applies its effect on its generators.
+Ce test vérifie si la fonction enable() applique son effet à ses générateurs.
 
 [Fonction enable()](https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/main/java/com/fasterxml/jackson/core/util/JsonGeneratorDelegate.java) (ligne 112) <br>
 [Fonction shouldEnableWriteNumbersAsStringsFeature()](https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/test/java/com/fasterxml/jackson/core/util/DelegatesTest.java) (ligne 496)
@@ -62,7 +73,7 @@ This test checks if the functions enable() applies its effect on its generators.
 
 # Test 5 testResetWithCopy():
 
-This test checks if the functions disable() does not apply its effect on the genrators.
+Ce test vérifie si la fonction disable() n'applique pas son effet aux générateurs.
 
 [Fonction resetWithCopy()](https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/main/java/com/fasterxml/jackson/core/util/JsonGeneratorDelegate.java) (ligne 118) <br>
 [Fonction shouldDisableWriteNumbersAsStringsFeature()](https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/test/java/com/fasterxml/jackson/core/util/DelegatesTest.java) (ligne 517)
@@ -74,3 +85,38 @@ This test checks if the functions disable() does not apply its effect on the gen
 ### Apres
 
 <img src="https://github.com/TibbySHR/jackson-core-tests/blob/2.18/images/test5apres.png"/>
+
+## Les 5 tests suivants sont conçus pour tester les fonctionnalités de NameN.java.
+
+src: https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/main/java/com/fasterxml/jackson/core/sym/NameN.java
+
+test: https://github.com/TibbySHR/jackson-core-tests/blob/2.18/src/test/java/com/fasterxml/jackson/core/NameNTest.java
+
+### Avant
+
+<img src="https://github.com/TibbySHR/jackson-core-tests/blob/2.18/images/6-10%20tests-avant.jpg"/>
+
+### Apres
+
+<img src="https://github.com/TibbySHR/jackson-core-tests/blob/2.18/images/6-10%20tests-apres.jpg"/>
+
+# Test 6 testEqualsSingleQuad():
+
+Objectif : S'assurer que NameN ne correspond pas à un tableau contenant un seul quad, garantissant que les longueurs différentes sont bien gérées.
+
+# Test 7 testEqualsTwoQuads():
+
+Objectif : Valider que NameN ne correspond pas à un tableau de deux quads, évitant les correspondances incorrectes pour des entrées plus courtes.
+
+# Test 8 testEqualsThreeQuads():
+
+Objectif : Assurer que NameN ne correspond pas à un tableau de trois quads, testant davantage le traitement des longueurs d'entrée différentes.
+
+# Test 9 testEqualsQuadArrayMatching():
+
+Objectif : S'assurer que NameN reconnaît correctement un tableau de quads complet et correspondant, garantissant la fonctionnalité attendue.
+
+# Test 10 testEqualsQuadArrayNonMatching():
+
+Objectif : Valider que NameN ne correspond pas à un tableau de quads différent, garantissant que le mécanisme de comparaison est fiable.
+
