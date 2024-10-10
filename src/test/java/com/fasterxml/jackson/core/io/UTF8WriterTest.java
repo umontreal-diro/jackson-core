@@ -163,4 +163,41 @@ class UTF8WriterTest
     private IOContext _ioContext() {
         return testIOContext();
     }
+    // Ce test vérifie que entrer un caractère invalide lève correctement une exeception et garantit que l'utilisateur gère les errues de manière appropriée.
+    @Test
+    void testWriteInvalidCharacter() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (UTF8Writer w = new UTF8Writer(_ioContext(), out)) {
+            w.write(0x110000); // Invalid code point > U+10FFFF
+            fail("failed");
+        } catch (IOException e) {
+            verifyException(e, "Invalid character");
+        }
+    }
+
+    // Ce test assure qu'écrire une chaîne vide n'a pas d'effet sur la sortie et le résultat doit également être une chaîne vide.
+    @Test
+    void testWriteWithEmptyString() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        UTF8Writer w = new UTF8Writer(_ioContext(), out);
+
+        w.write("");
+        w.flush();
+        assertEquals("", utf8String(out));
+    }
+
+    // Ce test vérifie la fonction flush après .write() et assure qu'elle sort correctement l'état actuel du tampon.
+    @Test
+    void testFlushWithData() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        UTF8Writer w = new UTF8Writer(_ioContext(), out);
+
+        w.write("Hello");
+        w.flush();
+        assertEquals("Hello", utf8String(out));
+        w.write("World");
+        w.flush();
+        assertEquals("HelloWorld", utf8String(out)); 
+
+    }
 }
