@@ -24,8 +24,8 @@ public class Base64VariantTest {
         return list;
     }
 
-    // Test correct values for expected read behaviours for base 64 variants.
-    // Useful to check changes to variants.
+    // Teste les valeurs correctes pour le comportement de lecture pour les variantes de base64.
+    // Utiles pour vérifier les changements apportés aux variants.
 
     @MethodSource("base64Variants")
     @ParameterizedTest(name = "{0}")
@@ -54,6 +54,8 @@ public class Base64VariantTest {
         assert(expectedBehaviour == paddingReadBehaviour);
     }
 
+    // Teste l'encodage avec l'ajout des guillemets anglais.
+
     @MethodSource("base64Variants")
     @ParameterizedTest(name = "{0}")
     void encodeAndAddQuotes(Base64Variant variant, String _name) {
@@ -71,6 +73,8 @@ public class Base64VariantTest {
 
         assert(encodedParagramWithQuotes.equals(PANGRAM_ENCODED));
     }
+
+    // Teste les erreurs attendues pour des "strings" base64 invalides.
 
     @MethodSource("base64Variants")
     @ParameterizedTest(name = "{0}")
@@ -94,6 +98,8 @@ public class Base64VariantTest {
 
         }
     }
+
+    // Méthode donnant les erreurs attendues pour decodeInvalidBase64.
 
     public String[] getExpectedErrorsForVariant(String name) {
         String[] DEFAULT_EXPECTED_ERRORS = {
