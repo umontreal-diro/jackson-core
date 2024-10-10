@@ -1,3 +1,16 @@
+# Samuel Maltais | Océane Hays TP1
+
+# Comparation des coverages
+
+Initial:
+
+![InitialCoverage.png](NouvTests_Coverage%2FInitialCoverage.png)
+
+Final:
+
+![FinalCov.png](NouvTests_Coverage%2FFinalCov.png)
+
+
 # Nouveaux tests
 
 # 1. Documentation du Test `ByteSourceJsonHandleBOMTest`
