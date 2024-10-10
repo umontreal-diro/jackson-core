@@ -8,8 +8,7 @@ Initial:
 
 Final:
 
-![FinalCov.png](NouvTests_Coverage%2FFinalCov.png)
-
+![FinalFinalCoverage.png](NouvTests_Coverage%2FFinalFinalCoverage.png)
 
 # Nouveaux tests
 
@@ -87,3 +86,10 @@ Fonctions visées:
 
 ![AddName.png](NouvTests_Coverage%2FAddName.png)
 
+# 10. Documentation du test `JsonGenerationExceptionTest`
+
+Ces tests unitaires sont crées pour provoquer des exeptions, et s'assurer que leur message coincide a ce quoi on s'attends.
+
+Fonctions visées:
+
+![img.png](NouvTests_Coverage%2Fimg.png)
