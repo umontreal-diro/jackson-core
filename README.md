@@ -1,3 +1,13 @@
+# Fichiers de test ajoutés
+
+src/test/java/com/fasterxml/jackson/core/base64/Base64VariantTest.java
+src/test/java/com/fasterxml/jackson/core/util/MinimalPrettyPrinterTest.java
+src/test/java/com/fasterxml/jackson/core/json/JsonParserNewCasesTest.java
+
+Ces tests ont été choisis pour:
+- Mieux tester Base64Variant
+- Augmenter la couverture de code dans les tests unitaires.
+
 # Overview
 
 This project contains core low-level incremental ("streaming") parser and generator abstractions used by
