@@ -183,7 +183,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
      }
 
     /*
-     * Ce test vérifique que writeRaw() ne parse pas un charactère invalide comme text. 
+     * Ce test vérifique que writeRaw() ne parse pas un caractère invalide comme text. 
      */
     
     @Test
@@ -203,7 +203,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     /*
-     * Ce test vérifique que writeRaw() ne parse pas un charactère invalide dans un array comme text. 
+     * Ce test vérifique que writeRaw() ne parse pas un caractère invalide dans un array comme text. 
      */
     @Test
     void writeRawInvalidArrayTest() throws Exception

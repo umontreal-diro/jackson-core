@@ -181,22 +181,26 @@ class UTF8WriterTest
     // Ce test assure qu'écrire une chaîne vide n'a pas d'effet sur la sortie et le résultat doit également être une chaîne vide.
     @Test
     void testWriteWithEmptyString() throws Exception {
+        // Arrange
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         UTF8Writer w = new UTF8Writer(_ioContext(), out);
-
+        // Act
         w.write("");
         w.flush();
+        // Assert
         assertEquals("", utf8String(out));
     }
 
     // Ce test vérifie la fonction flush après .write() et assure qu'elle sort correctement l'état actuel du tampon.
     @Test
     void testFlushWithData() throws Exception {
+        // Arrange
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         UTF8Writer w = new UTF8Writer(_ioContext(), out);
-
+        // Act
         w.write("Hello");
         w.flush();
+        // Assert
         assertEquals("Hello", utf8String(out));
         w.write("World");
         w.flush();

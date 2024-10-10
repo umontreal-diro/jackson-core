@@ -77,15 +77,20 @@ class DataFormatMatcherTest extends com.fasterxml.jackson.core.JUnit5TestBase
   // Ce test nous assure que la méthode getMatchedFormatName retourne NULL lorsqu'il n'y a pas de correspondance
   @Test
   void getMatchedFormatNameReturnsNullWhenNoMatch() {
+      // Arrange
+      byte[] test = new byte[]{1, 2, 3};
+
+      // Act
       DataFormatMatcher matcher = new DataFormatMatcher(
               null,
-              new byte[]{1, 2, 3},
+              test,
               0,
               3,
               null,
               null
       );
 
+      // Assert
       assertEquals(MatchStrength.INCONCLUSIVE, matcher.getMatchStrength());
   }
 
