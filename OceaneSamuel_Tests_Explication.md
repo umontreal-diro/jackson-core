@@ -68,6 +68,8 @@ Fonctions visées:
 
 Ces tests unitaires sont créés pour la classe `AddNameTest`, qui vérifie le comportement de l'ajout de noms dans le `ByteQuadsCanonicalizer`, utilisé pour la gestion des chaînes de caractères au sein de la bibliothèque Jackson.
 
+Nous utilisons ici java faker !
+
 Fonctions visées:
 
 ![AddName.png](NouvTests_Coverage%2FAddName.png)
