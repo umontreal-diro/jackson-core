@@ -21,7 +21,7 @@ public class AddNameTest extends JUnit5TestBase {
         int q1 = 2;
 
         String result = placeholder.addName(firstName,q1);
-        assertEquals("Oceane",result);
+        assertEquals(firstName,result);
     }
 
     @Test
@@ -35,6 +35,6 @@ public class AddNameTest extends JUnit5TestBase {
         int q2 = 5;
 
         String result = placeholder.addName(lastName,q1,q2);
-        assertEquals("Oceane",result);
+        assertEquals(lastName,result);
     }
 }
