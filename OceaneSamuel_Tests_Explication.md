@@ -24,9 +24,12 @@ Fonction visée:
 
 ![DefaultFeat.png](NouvTests_Coverage%2FDefaultFeat.png)
 
-# Documentation du Test `ParserFeatureTokensTest`
 
-Ces nouveaux tests unitaires sont créés pour le parser JSON Jackson, en particulier les fonctionnalités d'une classe de parser personnalisée `TestParser`, qui étend la classe `ParserMinimalBase` du package `com.fasterxml.jackson.core`. Les tests visent à vérifier le comportement du parsing des tokens et les valeurs par défaut.
+# 4. Documentation du Test `JsonParserReaderBasedTest`
+
+Ce document fournit une description détaillée des tests unitaires créés pour la classe `JsonParserReaderBasedTest`, qui vérifie le comportement d'un `JsonParser` basé sur des lecteurs (readers) lorsqu'il est fermé et utilise les méthodes `nextXxx()`. Il test plusieurs Exeptions qui n'ont jamais été covered
+
+![ParserBaseEOF.png](NouvTests_Coverage%2FParserBaseEOF.png)
 
 # 5. Documentation du Test `DataOutputAsStreamTest`
 
@@ -35,3 +38,37 @@ ces tests unitaires sont créés pour la classe `DataOutputAsStream`, qui permet
 fonctions visées:
 
 ![DataOutputStream.png](NouvTests_Coverage%2FDataOutputStream.png)
+
+
+# 6. Documentation du Test `ParserFeatureTokensTest`
+
+Ces nouveaux tests unitaires sont créés pour le parser JSON Jackson, en particulier les fonctionnalités d'une classe de parser personnalisée `TestParser`, qui étend la classe `ParserMinimalBase` du package `com.fasterxml.jackson.core`. Les tests visent à vérifier le comportement du parsing des tokens et les valeurs par défaut.
+
+Fonctions visées:
+
+![ParserBase.png](NouvTests_Coverage%2FParserBase.png)
+
+# 7. Documentation du Test `ParseNumberInputTest`
+
+Les tests unitaires créés pour la classe `ParseNumberInputTest`, vérifient le comportement de la méthode `parseAsInt` de la classe `NumberInput` pour différents types d'entrées.
+
+Fonctions visées:
+
+![InputValid.png](NouvTests_Coverage%2FInputValid.png)
+
+# 8. Documentation du Test `UTF8JsonGeneratorTest`
+
+Ces tests unitaires sont créés pour la classe `UTF8JsonGeneratorTest`, qui vérifie le comportement du générateur JSON UTF-8 dans le cadre de l'écriture de chaînes contenant des caractères spéciaux et des nombres. On testait ici particulièrement certains constructeurs neuf de la version 2.10, non couvert.
+
+Fonctions visées:
+
+![UTF8.png](NouvTests_Coverage%2FUTF8.png)
+
+# 9. Documentation du Test `AddNameTest`
+
+Ces tests unitaires sont créés pour la classe `AddNameTest`, qui vérifie le comportement de l'ajout de noms dans le `ByteQuadsCanonicalizer`, utilisé pour la gestion des chaînes de caractères au sein de la bibliothèque Jackson.
+
+Fonctions visées:
+
+![AddName.png](NouvTests_Coverage%2FAddName.png)
+
