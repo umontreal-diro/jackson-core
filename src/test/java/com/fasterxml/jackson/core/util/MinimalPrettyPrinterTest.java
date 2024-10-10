@@ -29,6 +29,7 @@ public class MinimalPrettyPrinterTest {
      * Donc on crée un générateur JSON réel et on lui attache le pretty printer
      * pour tester la sortie.
      * Note : on utilise flush() dans tous les tests pour que le contenu du buffer soit écrit.
+     * !N'augmente pas le coverage
      * 
      * @throws IOException
      */
