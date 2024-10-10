@@ -118,6 +118,7 @@ com.fasterxml.jackson.core.*;version=${project.version}
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
+          <!--suppress UnresolvedMavenProperty -->
           <redirectTestOutputToFile>${surefire.redirectTestOutputToFile}</redirectTestOutputToFile>
           <excludes>
             <exclude>**/failing/**/*.java</exclude>
@@ -180,6 +181,7 @@ com.fasterxml.jackson.core.*;version=${project.version}
                      NOTE: `project.version.underscore' comes from `jackson-base/pom.xml`
                      parent pom
                     -->
+                  <!--suppress UnresolvedMavenProperty -->
                   <shadedPattern>com/fasterxml/jackson/core/internal/shaded/fdp/v${project.version.underscore}</shadedPattern>
                 </relocation>
                 <relocation>
@@ -200,18 +202,22 @@ com.fasterxml.jackson.core.*;version=${project.version}
                 </relocation>
                 <relocation>
                   <pattern>META-INF/versions/11/ch/randelshofer/fastdoubleparser</pattern>
+                  <!--suppress UnresolvedMavenProperty -->
                   <shadedPattern>META-INF/versions/11/com/fasterxml/jackson/core/internal/shaded/fdp/v${project.version.underscore}</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>META-INF/versions/17/ch/randelshofer/fastdoubleparser</pattern>
+                  <!--suppress UnresolvedMavenProperty -->
                   <shadedPattern>META-INF/versions/17/com/fasterxml/jackson/core/internal/shaded/fdp/v${project.version.underscore}</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>META-INF/versions/21/ch/randelshofer/fastdoubleparser</pattern>
+                  <!--suppress UnresolvedMavenProperty -->
                   <shadedPattern>META-INF/versions/21/com/fasterxml/jackson/core/internal/shaded/fdp/v${project.version.underscore}</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>META-INF/versions/22/ch/randelshofer/fastdoubleparser</pattern>
+                  <!--suppress UnresolvedMavenProperty -->
                   <shadedPattern>META-INF/versions/22/com/fasterxml/jackson/core/internal/shaded/fdp/v${project.version.underscore}</shadedPattern>
                 </relocation>
               </relocations>
