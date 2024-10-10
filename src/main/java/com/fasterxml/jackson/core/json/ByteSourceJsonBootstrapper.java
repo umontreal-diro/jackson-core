@@ -139,7 +139,6 @@ public final class ByteSourceJsonBootstrapper
                 | ((_inputBuffer[_inputPtr+1] & 0xFF) << 16)
                 | ((_inputBuffer[_inputPtr+2] & 0xFF) << 8)
                 | (_inputBuffer[_inputPtr+3] & 0xFF);
-
             if (handleBOM(quad)) {
                 foundEncoding = true;
             } else {
