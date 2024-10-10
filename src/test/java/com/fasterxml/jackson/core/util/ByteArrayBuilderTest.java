@@ -11,11 +11,9 @@ import com.fasterxml.jackson.core.io.IOContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ByteArrayBuilderTest extends com.fasterxml.jackson.core.JUnit5TestBase
-{
+class ByteArrayBuilderTest extends com.fasterxml.jackson.core.JUnit5TestBase {
     @Test
-    void simple() throws Exception
-    {
+    void simple() throws Exception {
         ByteArrayBuilder b = new ByteArrayBuilder(null, 20);
         assertArrayEquals(new byte[0], b.toByteArray());
 
@@ -40,8 +38,7 @@ class ByteArrayBuilderTest extends com.fasterxml.jackson.core.JUnit5TestBase
 
     // [core#1195]: Try to verify that BufferRecycler instance is indeed reused
     @Test
-    void bufferRecyclerReuse() throws Exception
-    {
+    void bufferRecyclerReuse() throws Exception {
         JsonFactory f = new JsonFactory();
         BufferRecycler br = new BufferRecycler()
                 // need to link with some pool
@@ -72,4 +69,29 @@ class ByteArrayBuilderTest extends com.fasterxml.jackson.core.JUnit5TestBase
         br.releaseToPool();
         assertFalse(br.isLinkedWithPool());
     }
+
+    /**
+     * Ce test s'assure que la méthode dans ByteArrayBuilder size donne le nombre
+     * global exact dans le buffer
+     */
+
+    @Test
+    void testBufferSize() throws Exception {
+
+        // Arrange
+        ByteArrayBuilder buffer = new ByteArrayBuilder(null, 15); // Using a different initial capacity
+
+        // Act
+        buffer.write((byte) 10); // Write a single byte
+        buffer.write((byte) 20); // Write another single byte
+        buffer.appendFourBytes(0xAABBCCDD); // Append four bytes
+        buffer.appendTwoBytes((short) 0xEEFF); // Append two more bytes
+
+        // Assert
+        assertEquals(8, buffer.size()); // Total should be 8 bytes (2 + 4 + 2)
+
+        buffer.release();
+        buffer.close();
+    }
+
 }

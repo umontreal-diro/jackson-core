@@ -15,10 +15,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
-{
-    static class BogusSchema implements FormatSchema
-    {
+class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase {
+    static class BogusSchema implements FormatSchema {
         @Override
         public String getSchemaType() {
             return "test";
@@ -29,8 +27,7 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         public int x = 3;
     }
 
-    static class BogusCodec extends ObjectCodec
-    {
+    static class BogusCodec extends ObjectCodec {
         public Object pojoWritten;
         public TreeNode treeWritten;
 
@@ -43,27 +40,33 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         public <T> T readValue(JsonParser p, Class<T> valueType) {
             return null;
         }
+
         @Override
         public <T> T readValue(JsonParser p, TypeReference<T> valueTypeRef) {
             return null;
         }
+
         @Override
         public <T> T readValue(JsonParser p, ResolvedType valueType) {
             return null;
         }
+
         @Override
         public <T> Iterator<T> readValues(JsonParser p, Class<T> valueType) {
             return null;
         }
+
         @Override
         public <T> Iterator<T> readValues(JsonParser p,
                 TypeReference<T> valueTypeRef) throws IOException {
             return null;
         }
+
         @Override
         public <T> Iterator<T> readValues(JsonParser p, ResolvedType valueType) {
             return null;
         }
+
         @Override
         public void writeValue(JsonGenerator gen, Object value) throws IOException {
             gen.writeString("pojo");
@@ -74,6 +77,7 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         public <T extends TreeNode> T readTree(JsonParser p) {
             return null;
         }
+
         @Override
         public void writeTree(JsonGenerator gen, TreeNode tree) throws IOException {
             gen.writeString("tree");
@@ -84,10 +88,12 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         public TreeNode createObjectNode() {
             return null;
         }
+
         @Override
         public TreeNode createArrayNode() {
             return null;
         }
+
         @Override
         public TreeNode missingNode() {
             return null;
@@ -97,10 +103,12 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         public TreeNode nullNode() {
             return null;
         }
+
         @Override
         public JsonParser treeAsTokens(TreeNode n) {
             return null;
         }
+
         @Override
         public <T> T treeToValue(TreeNode n, Class<T> valueType) {
             return null;
@@ -200,10 +208,9 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
      * Test default, non-overridden parser delegate.
      */
     @Test
-    void parserDelegate() throws IOException
-    {
+    void parserDelegate() throws IOException {
         final int MAX_NUMBER_LEN = 200;
-        final String TOKEN ="foo";
+        final String TOKEN = "foo";
 
         StreamReadConstraints CUSTOM_CONSTRAINTS = StreamReadConstraints.builder()
                 .maxNumberLength(MAX_NUMBER_LEN)
@@ -261,8 +268,8 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         assertEquals(1d, del.getDoubleValue());
         assertTrue(del.getValueAsBoolean());
         assertTrue(del.getValueAsBoolean(false));
-        assertEquals((byte)1, del.getByteValue());
-        assertEquals((short)1, del.getShortValue());
+        assertEquals((byte) 1, del.getByteValue());
+        assertEquals((short) 1, del.getShortValue());
         assertEquals(1f, del.getFloatValue());
         assertFalse(del.isNaN());
         assertTrue(del.isExpectedNumberIntToken());
@@ -311,9 +318,8 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
      */
     @SuppressWarnings("deprecation")
     @Test
-    void generatorDelegate() throws IOException
-    {
-        final String TOKEN ="foo";
+    void generatorDelegate() throws IOException {
+        final String TOKEN = "foo";
 
         StringWriter sw = new StringWriter();
         JsonGenerator g0 = JSON_F.createGenerator(sw);
@@ -351,7 +357,8 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         del.writeBoolean(false);
         del.writeString("foo");
 
-        // verify that we can actually set/get "current value" as expected, even with delegates
+        // verify that we can actually set/get "current value" as expected, even with
+        // delegates
         assertNull(del.getCurrentValue());
         del.setCurrentValue(TOKEN);
 
@@ -375,8 +382,7 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
     }
 
     @Test
-    void generatorDelegateArrays() throws IOException
-    {
+    void generatorDelegateArrays() throws IOException {
         StringWriter sw = new StringWriter();
         JsonGenerator g0 = JSON_F.createGenerator(sw);
         JsonGeneratorDelegate del = new JsonGeneratorDelegate(g0);
@@ -397,8 +403,7 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
     }
 
     @Test
-    void generatorDelegateComments() throws IOException
-    {
+    void generatorDelegateComments() throws IOException {
         StringWriter sw = new StringWriter();
         JsonGenerator g0 = JSON_F.createGenerator(sw);
         JsonGeneratorDelegate del = new JsonGeneratorDelegate(g0);
@@ -422,8 +427,7 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
     }
 
     @Test
-    void delegateCopyMethods() throws IOException
-    {
+    void delegateCopyMethods() throws IOException {
         JsonParser p = JSON_F.createParser("[123,[true,false]]");
         StringWriter sw = new StringWriter();
         JsonGenerator g0 = JSON_F.createGenerator(sw);
@@ -446,14 +450,13 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
     }
 
     @Test
-    void notDelegateCopyMethods() throws IOException
-    {
+    void notDelegateCopyMethods() throws IOException {
         JsonParser jp = JSON_F.createParser("[{\"a\":[1,2,{\"b\":3}],\"c\":\"d\"},{\"e\":false},null]");
         StringWriter sw = new StringWriter();
         JsonGenerator jg = new JsonGeneratorDelegate(JSON_F.createGenerator(sw), false) {
             @Override
             public void writeFieldName(String name) throws IOException {
-                super.writeFieldName(name+"-test");
+                super.writeFieldName(name + "-test");
                 super.writeBoolean(true);
                 super.writeFieldName(name);
             }
@@ -461,15 +464,16 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         jp.nextToken();
         jg.copyCurrentStructure(jp);
         jg.flush();
-        assertEquals("[{\"a-test\":true,\"a\":[1,2,{\"b-test\":true,\"b\":3}],\"c-test\":true,\"c\":\"d\"},{\"e-test\":true,\"e\":false},null]", sw.toString());
+        assertEquals(
+                "[{\"a-test\":true,\"a\":[1,2,{\"b-test\":true,\"b\":3}],\"c-test\":true,\"c\":\"d\"},{\"e-test\":true,\"e\":false},null]",
+                sw.toString());
         jp.close();
         jg.close();
     }
 
     @SuppressWarnings("resource")
     @Test
-    void generatorWithCodec() throws IOException
-    {
+    void generatorWithCodec() throws IOException {
         BogusCodec codec = new BogusCodec();
         StringWriter sw = new StringWriter();
         JsonGenerator g0 = JSON_F.createGenerator(sw);
@@ -488,4 +492,48 @@ class DelegatesTest extends com.fasterxml.jackson.core.JUnit5TestBase
         assertSame(tree, codec.treeWritten);
         assertSame(pojo, codec.pojoWritten);
     }
+
+    /* This test checks if the functions applies its effect. */
+    @Test
+    void shouldEnableWriteNumbersAsStringsFeature() throws IOException {
+        // Arrange
+        StringWriter stringWriter = new StringWriter();
+        JsonGenerator originalGenerator = JSON_F.createGenerator(stringWriter);
+        JsonGeneratorDelegate delegateGenerator = new JsonGeneratorDelegate(originalGenerator, false);
+
+        // Act
+        delegateGenerator.enable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS);
+        delegateGenerator.writeStartArray();
+        delegateGenerator.writeNumber(12345);
+        delegateGenerator.writeEndArray();
+        delegateGenerator.close();
+
+        // Assert
+        String expectedOutput = "[\"12345\"]";
+        String actualOutput = stringWriter.toString();
+        assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
+    void shouldDisableWriteNumbersAsStringsFeature() throws IOException {
+        // Arrange
+        StringWriter stringWriter = new StringWriter();
+        JsonGenerator originalGenerator = JSON_F.createGenerator(stringWriter);
+        JsonGeneratorDelegate delegateGenerator = new JsonGeneratorDelegate(originalGenerator, false);
+
+        // Act
+        delegateGenerator.enable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS);
+        delegateGenerator.disable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS);
+
+        delegateGenerator.writeStartArray();
+        delegateGenerator.writeNumber(12345);
+        delegateGenerator.writeEndArray();
+        delegateGenerator.close();
+
+        // Assert
+        String expectedOutput = "[12345]";
+        String actualOutput = stringWriter.toString();
+        assertEquals(expectedOutput, actualOutput);
+    }
+
 }

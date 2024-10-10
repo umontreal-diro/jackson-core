@@ -14,8 +14,7 @@ import com.fasterxml.jackson.core.json.UTF8JsonGenerator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UTF8GeneratorTest extends JUnit5TestBase
-{
+class UTF8GeneratorTest extends JUnit5TestBase {
     private final JsonFactory JSON_F = new JsonFactory();
 
     private final JsonFactory JSON_MAX_NESTING_1 = JsonFactory.builder()
@@ -23,8 +22,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
             .build();
 
     @Test
-    void utf8Issue462() throws Exception
-    {
+    void utf8Issue462() throws Exception {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         IOContext ioc = testIOContext();
         JsonGenerator gen = new UTF8JsonGenerator(ioc, 0, null, bytes, '"');
@@ -51,8 +49,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     @Test
-    void nestingDepthWithSmallLimit() throws Exception
-    {
+    void nestingDepthWithSmallLimit() throws Exception {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (JsonGenerator gen = JSON_MAX_NESTING_1.createGenerator(bytes)) {
             gen.writeStartObject();
@@ -66,8 +63,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     @Test
-    void nestingDepthWithSmallLimitNestedObject() throws Exception
-    {
+    void nestingDepthWithSmallLimitNestedObject() throws Exception {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (JsonGenerator gen = JSON_MAX_NESTING_1.createGenerator(bytes)) {
             gen.writeStartObject();
@@ -82,8 +78,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
 
     // for [core#115]
     @Test
-    void surrogatesWithRaw() throws Exception
-    {
+    void surrogatesWithRaw() throws Exception {
         final String VALUE = q("\ud83d\ude0c");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         JsonGenerator g = JSON_F.createGenerator(out);
@@ -106,8 +101,7 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     @Test
-    void filteringWithEscapedChars() throws Exception
-    {
+    void filteringWithEscapedChars() throws Exception {
         final String SAMPLE_WITH_QUOTES = "\b\t\f\n\r\"foo\"\u0000";
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -120,7 +114,8 @@ class UTF8GeneratorTest extends JUnit5TestBase
                 false // multipleMatches
         );
 
-        //final String JSON = "{'a':123,'array':[1,2],'escapes':'\b\t\f\n\r\"foo\"\u0000'}";
+        // final String JSON =
+        // "{'a':123,'array':[1,2],'escapes':'\b\t\f\n\r\"foo\"\u0000'}";
 
         gen.writeStartObject();
 
@@ -153,4 +148,46 @@ class UTF8GeneratorTest extends JUnit5TestBase
         assertNull(p.nextToken());
         p.close();
     }
+
+    // Ce test verifie si la méthode writeStartObject dans UTF8JsonGenerator.java
+    // roule sans probleme(ligne 393).
+
+    @Test
+    void testWriteStartObjectWithParameters() throws Exception {
+
+        // Initialisation : Préparer un flux de sortie pour capturer le JSON généré
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JsonGenerator generator = JSON_F.createGenerator(outputStream);
+
+        // Variables de test
+        Object objectUnderTest = new Object();
+        String fieldName = "name_field";
+        String fieldValue = "value_field";
+
+        // Exécution : Écrire un objet JSON avec un nom et une valeur de champ
+        generator.writeStartObject(objectUnderTest);
+        generator.writeFieldName(fieldName);
+        generator.writeString(fieldValue);
+        generator.writeEndObject();
+        generator.flush(); // Forcer l'écriture dans le flux
+        generator.close();
+
+        // Validation : Parse le JSON généré et vérifie les tokens
+        JsonParser parser = JSON_F.createParser(outputStream.toByteArray());
+
+        // Vérifier le début de l'objet
+        assertToken(JsonToken.START_OBJECT, parser.nextToken());
+
+        // Vérifier le nom du champ
+        assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+        assertEquals(fieldName, parser.getText());
+
+        // Vérifier la valeur du champ
+        assertToken(JsonToken.VALUE_STRING, parser.nextToken());
+        assertEquals(fieldValue, parser.getText());
+
+        // Vérifier la fin de l'objet
+        assertToken(JsonToken.END_OBJECT, parser.nextToken());
+    }
+
 }

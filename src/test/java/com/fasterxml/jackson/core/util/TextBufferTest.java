@@ -7,15 +7,13 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TextBufferTest
-    extends com.fasterxml.jackson.core.JUnit5TestBase
-{
+        extends com.fasterxml.jackson.core.JUnit5TestBase {
     /**
      * Trivially simple basic test to ensure all basic append
      * methods work
      */
     @Test
-    void simple() throws Exception
-    {
+    void simple() throws Exception {
         TextBuffer tb = new TextBuffer(new BufferRecycler());
         tb.append('a');
         tb.append(new char[] { 'X', 'b' }, 1, 1);
@@ -30,8 +28,7 @@ class TextBufferTest
     }
 
     @Test
-    void longer() throws Exception
-    {
+    void longer() throws Exception {
         TextBuffer tb = new TextBuffer(null);
         for (int i = 0; i < 2000; ++i) {
             tb.append("abc", 0, 3);
@@ -46,8 +43,7 @@ class TextBufferTest
     }
 
     @Test
-    void longAppend() throws Exception
-    {
+    void longAppend() throws Exception {
         final int len = TextBuffer.MAX_SEGMENT_LEN * 3 / 2;
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; ++i) {
@@ -61,7 +57,7 @@ class TextBufferTest
         tb.append('a');
         tb.append(STR, 0, len);
         tb.append('c');
-        assertEquals(len+2, tb.size());
+        assertEquals(len + 2, tb.size());
         assertEquals(EXP, tb.contentsAsString());
 
         // then char[]
@@ -69,14 +65,13 @@ class TextBufferTest
         tb.append('a');
         tb.append(STR.toCharArray(), 0, len);
         tb.append('c');
-        assertEquals(len+2, tb.size());
+        assertEquals(len + 2, tb.size());
         assertEquals(EXP, tb.contentsAsString());
     }
 
     // [core#152]
     @Test
-    void expand() throws Exception
-    {
+    void expand() throws Exception {
         TextBuffer tb = new TextBuffer(new BufferRecycler());
         char[] buf = tb.getCurrentSegment();
 
@@ -84,7 +79,7 @@ class TextBufferTest
             char[] old = buf;
             buf = tb.expandCurrentSegment();
             if (old.length >= buf.length) {
-                fail("Expected buffer of "+old.length+" to expand, did not, length now "+buf.length);
+                fail("Expected buffer of " + old.length + " to expand, did not, length now " + buf.length);
             }
         }
         tb.resetWithString("Foobar");
@@ -216,24 +211,24 @@ class TextBufferTest
     public void testContentsAsFloat() throws IOException {
         TextBuffer textBuffer = new TextBuffer(null);
         textBuffer.resetWithString("1.2345678");
-        assertEquals(1.2345678f,  textBuffer.contentsAsFloat(false));
+        assertEquals(1.2345678f, textBuffer.contentsAsFloat(false));
     }
 
     public void testContentsAsFloatFastParser() throws IOException {
         TextBuffer textBuffer = new TextBuffer(null);
         textBuffer.resetWithString("1.2345678");
-        assertEquals(1.2345678f,  textBuffer.contentsAsFloat(true));
+        assertEquals(1.2345678f, textBuffer.contentsAsFloat(true));
     }
 
     public void testContentsAsDouble() throws IOException {
         TextBuffer textBuffer = new TextBuffer(null);
         textBuffer.resetWithString("1.234567890123456789");
-        assertEquals(1.234567890123456789d,  textBuffer.contentsAsDouble(false));
+        assertEquals(1.234567890123456789d, textBuffer.contentsAsDouble(false));
     }
 
     public void testContentsAsDoubleFastParser() throws IOException {
         TextBuffer textBuffer = new TextBuffer(null);
         textBuffer.resetWithString("1.234567890123456789");
-        assertEquals(1.234567890123456789d,  textBuffer.contentsAsDouble(true));
+        assertEquals(1.234567890123456789d, textBuffer.contentsAsDouble(true));
     }
 }
