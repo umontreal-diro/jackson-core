@@ -388,7 +388,6 @@ public abstract class ParserMinimalBase extends JsonParser
     /* Public API, access with conversion/coercion
     /**********************************************************
      */
-
     @Override
     public boolean getValueAsBoolean(boolean defaultValue) throws IOException
     {
@@ -436,6 +435,9 @@ public abstract class ParserMinimalBase extends JsonParser
         return getValueAsInt(0);
     }
 
+    /*
+        TODO C'EST FAIT
+     */
     @Override
     public int getValueAsInt(int defaultValue) throws IOException
     {
@@ -618,6 +620,9 @@ public abstract class ParserMinimalBase extends JsonParser
         throw new InputCoercionException(this, msg, inputType, targetType);
     }
 
+    /*
+        TODO C'EST FAIT
+     */
     protected void _reportInvalidEOF() throws JsonParseException {
         _reportInvalidEOF(" in "+_currToken, _currToken);
     }
@@ -654,6 +659,7 @@ public abstract class ParserMinimalBase extends JsonParser
     protected void reportInvalidNumber(String msg) throws JsonParseException {
         throw _constructReadException("Invalid numeric value: "+msg);
     }
+
 
     protected void _reportMissingRootWS(int ch) throws JsonParseException {
         _reportUnexpectedChar(ch, "Expected space separating root-level values");
