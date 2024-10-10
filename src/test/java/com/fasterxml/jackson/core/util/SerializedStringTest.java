@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.io.SerializedString;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Simple unit tests to try to verify that the default
@@ -82,5 +84,72 @@ class SerializedStringTest
         final byte[] buffer = new byte[100];
         final int len = sstr.appendQuotedUTF8(buffer, 3);
         assertEquals("\\\\\\\"quo\\\\\\\\ted\\\\\\\"", new String(buffer, 3, len));
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#charLength()}
+     * avec un la chaîne de caractère vide.
+     */
+    @Test
+    void testEmptyCharLength() {
+        SerializedString stringVide = new SerializedString("");
+        assertEquals(0, stringVide.charLength());
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#charLength()}
+     * avec le retour chariot
+     */
+    @Test
+    void testRetourchariotCharLength() {
+        SerializedString retourCharriot = new SerializedString("\n");
+        assertEquals(1, retourCharriot.charLength());
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#charLength()}
+     * avec le tabulation
+     */
+    @Test
+    void testTabulationCharLength() {
+        SerializedString tabulation = new SerializedString("\t");
+        assertEquals(1, tabulation.charLength());
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#appendQuoted(char[], int)}
+     * avec un buffer de taille suffisante.
+     */
+    @Test
+    void testAppendQuotedWithTooSmallBuffer() {
+        SerializedString mike_horn = new SerializedString("Mike Horn");
+        char[] buffer = new char[5]; 
+        int result = mike_horn.appendQuoted(buffer, 0);
+        assertEquals(-1, result);
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#appendUnquoted(char[], int)}
+     * avec un buffer de taille suffisante.
+     */
+    @Test
+    void testAppendUnquotedWithTooSmallBuffer() {
+        SerializedString stromae = new SerializedString("House'llelujah");
+        char[] buffer = new char[11];
+        int result = stromae.appendUnquoted(buffer, 0);
+        assertEquals(-1, result);
+    }
+
+    /**
+     * Teste la méthode {@link SerializedString#appendQuotedUTF8(byte[], int)}.
+     * La méthode appendQuotedUTF8 doit ajouter la chaîne de caractères
+     * encodée en UTF-8 dans le buffer passé en paramètre.
+     */
+    @Test
+    void testAsQuotedUTF8() {
+        SerializedString batman = new SerializedString("Bruce Wayne");
+        byte[] expected = batman.asQuotedUTF8();
+        assertNotNull(expected);
+        assertTrue(expected.length > 0);
     }
 }
