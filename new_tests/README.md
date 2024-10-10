@@ -6,8 +6,8 @@
 
 Ce test vérifie que la méthode `expandCurrentSegment` augmente correctement la taille du segment actuel dans le `TextBuffer`. Il est important pour garantir que le tampon gère correctement les grandes entrées sans provoquer d'erreurs de mémoire.
 <br> 
-- [Méthode](src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java) (ligne 1086) <br>
-- [Test](src/test/java/com/fasterxml/jackson/core/filter/TextBufferTest.java) (ligne 245)
+- [Méthode](../src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java) (ligne 1086) <br>
+- [Test](../src/test/java/com/fasterxml/jackson/core/filter/TextBufferTest.java) (ligne 245)
 <br>
 <img src="image1before.png" width="700" /><br>
 <img src="image1after.png" width="700" /><br>
