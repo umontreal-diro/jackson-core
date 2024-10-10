@@ -167,11 +167,14 @@ class UTF8WriterTest
     @Test
     void testWriteInvalidCharacter() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (UTF8Writer w = new UTF8Writer(_ioContext(), out)) {
-            w.write(0x110000); // Invalid code point > U+10FFFF
-            fail("failed");
+        UTF8Writer w = new UTF8Writer(_ioContext(), out);
+    
+        try {
+            w.write(0x110000);
+            fail("should not pass");
         } catch (IOException e) {
-            verifyException(e, "Invalid character");
+            assertTrue(e.getMessage().contains("Illegal character point"), 
+                       "Expected exception message to contain 'Illegal character point'");
         }
     }
 
