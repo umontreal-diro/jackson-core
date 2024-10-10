@@ -1,12 +1,22 @@
-# Fichiers de test ajoutés
+# Elliot Pozucek - Samuel Miller - Tâche 2
 
-src/test/java/com/fasterxml/jackson/core/base64/Base64VariantTest.java
-src/test/java/com/fasterxml/jackson/core/util/MinimalPrettyPrinterTest.java
-src/test/java/com/fasterxml/jackson/core/json/JsonParserNewCasesTest.java
+Premièrement, nous souhaitons vous présentez nos excuses pour le dépassement du délais.
+
+## Tests ajoutés
+
+- [Base64VariantTest](src/test/java/com/fasterxml/jackson/core/base64/Base64VariantTest.java)
+- [MinimalPrettyPrinterTest](src/test/java/com/fasterxml/jackson/core/util/MinimalPrettyPrinterTest.java)
+- [JsonParserNewCasesTest](src/test/java/com/fasterxml/jackson/core/json/JsonParserNewCasesTest.java)
+- [SerializedStringTest](src/test/java/com/fasterxml/jackson/core/util/SerializedStringTest.java)
+- [WritableTypeIdTest](src/test/java/com/fasterxml/jackson/core/type/WritableTypeIdTest.java)
+- [DefaultIndenterTest](src/test/java/com/fasterxml/jackson/core/util/DefaultIndenterTest.java)
+
 
 Ces tests ont été choisis pour:
 - Mieux tester Base64Variant
 - Augmenter la couverture de code dans les tests unitaires.
+- Tester les fonctions 'basiques' dans des classes de tests (*WritableTypeIdTest* et *SerializedStringTest* par exemple)
+- Tester des edges cases (*DefaultIndenteTest*)
 
 # Overview
 
