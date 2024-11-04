@@ -76,6 +76,7 @@
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <phase>initialize</phase>
           </execution>
           <execution>
             <id>report</id>
@@ -108,6 +109,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
+          <argLine>${jacoco.agent.argLine}</argLine>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <excludes>
             <exclude>**/failing/**/*.java</exclude>
