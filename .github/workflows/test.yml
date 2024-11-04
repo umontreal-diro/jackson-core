@@ -37,7 +37,8 @@ jobs:
 
       # Display the JVM flag being used
       - name: Display JVM Flag
-        run: echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
+        run: |
+          echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
 
       # Run Maven tests with different JVM flags and generate JaCoCo coverage report
       - name: Run Maven tests with JVM Flag and generate coverage report
