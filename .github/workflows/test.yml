@@ -28,6 +28,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # Sanitize the JVM flag for artifact names
+      - name: Sanitize JVM Flag
+        id: sanitize
+        run: |
+          # Replace invalid characters
+          sanitized_flag="${{ matrix.jvm_flag//[:+]/_ }}"
+          echo "sanitized_flag=$sanitized_flag" >> $GITHUB_ENV
+
       # Run Maven tests with different JVM flags and generate JaCoCo coverage report
       - name: Run Maven tests with JVM Flag and generate coverage report
         run: |
@@ -39,7 +47,7 @@ jobs:
       - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
+          name: jacoco-report-${{ env.sanitized_flag }}
           path: target/site/jacoco/  # Path to the JaCoCo report
 
       # Save test logs
@@ -53,7 +61,7 @@ jobs:
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
         with:
-          name: test-logs-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
+          name: test-logs-${{ env.sanitized_flag }}
           path: logs/
 
       # Generate and list untested classes
@@ -76,7 +84,7 @@ jobs:
       - name: Upload Untested Classes List
         uses: actions/upload-artifact@v3
         with:
-          name: untested-classes-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
+          name: untested-classes-${{ env.sanitized_flag }}
           path: untested-classes.html
 
       # Fail if coverage has not improved
