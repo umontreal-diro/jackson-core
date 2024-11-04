@@ -35,11 +35,11 @@ jobs:
         env:
           JVM_OPTS: ${{ matrix.jvm_flag }}
 
-      # Upload JaCoCo Coverage Report as an artifact
+      # Upload JaCoCo Coverage Report as an artifact with sanitized name
       - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report-${{ matrix.jvm_flag }}
+          name: jacoco-report-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
           path: target/site/jacoco/  # Path to the JaCoCo report
 
       # Save test logs
@@ -49,11 +49,11 @@ jobs:
           mv target/surefire-reports/*.txt logs/
         if: always()
 
-      # Upload the logs as an artifact for each JVM flag
+      # Upload the logs as an artifact for each JVM flag with sanitized name
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
         with:
-          name: test-logs-${{ matrix.jvm_flag }}
+          name: test-logs-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
           path: logs/
 
       # Generate and list untested classes
@@ -72,11 +72,11 @@ jobs:
             fi
           fi
 
-      # Upload the list of untested classes as an artifact
+      # Upload the list of untested classes as an artifact with sanitized name
       - name: Upload Untested Classes List
         uses: actions/upload-artifact@v3
         with:
-          name: untested-classes-${{ matrix.jvm_flag }}
+          name: untested-classes-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
           path: untested-classes.html
 
       # Fail if coverage has not improved
