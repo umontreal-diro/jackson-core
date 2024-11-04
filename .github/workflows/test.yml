@@ -32,8 +32,7 @@ jobs:
       - name: Sanitize JVM Flag
         id: sanitize
         run: |
-          # Replace invalid characters
-          sanitized_flag="${{ matrix.jvm_flag//[:+]/_ }}"
+          sanitized_flag=$(echo "${{ matrix.jvm_flag }}" | sed 's/[:+]/_/g')
           echo "sanitized_flag=$sanitized_flag" >> $GITHUB_ENV
 
       # Run Maven tests with different JVM flags and generate JaCoCo coverage report
