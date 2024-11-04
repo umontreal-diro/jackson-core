@@ -1,4 +1,4 @@
-name: Maven tests and coverage report
+name: Maven tests and coverage report with multiple JVM flags
 
 on:
   pull_request:
@@ -7,6 +7,15 @@ on:
 jobs: 
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jvm_flag:
+          - "-Xmx512m"
+          - "-XX:+AlwaysPreTouch"
+          - "-XX:+UseG1GC"
+          - "-XX:+UseStringDeduplication"
+          - "-XX:+UnlockExperimentalVMOptions -XX:+UseCompressedOops"
+
     steps:
       # Checkout the repository
       - uses: actions/checkout@v4
@@ -19,16 +28,33 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Run Maven tests and generate JaCoCo coverage report
-      - name: Run Maven tests and generate coverage report
-        run: mvn clean verify jacoco:report
+      # Run Maven tests with different JVM flags and generate JaCoCo coverage report
+      - name: Run Maven tests with JVM Flag and generate coverage report
+        run: |
+          mvn clean verify jacoco:report -DargLine="${{ matrix.jvm_flag }}"
+        env:
+          JVM_OPTS: ${{ matrix.jvm_flag }}
 
       # Upload JaCoCo Coverage Report as an artifact
       - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report
+          name: jacoco-report-${{ matrix.jvm_flag }}
           path: target/site/jacoco/  # Path to the JaCoCo report
+
+      # Save test logs
+      - name: Save Test Logs
+        run: |
+          mkdir -p logs
+          mv target/surefire-reports/*.txt logs/
+        if: always()
+
+      # Upload the logs as an artifact for each JVM flag
+      - name: Upload Test Logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs-${{ matrix.jvm_flag }}
+          path: logs/
 
       # Generate and list untested classes
       - name: Generate untested classes list
@@ -50,7 +76,7 @@ jobs:
       - name: Upload Untested Classes List
         uses: actions/upload-artifact@v3
         with:
-          name: untested-classes
+          name: untested-classes-${{ matrix.jvm_flag }}
           path: untested-classes.html
 
       # Fail if coverage has not improved
