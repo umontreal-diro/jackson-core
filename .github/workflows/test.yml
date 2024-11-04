@@ -39,7 +39,7 @@ jobs:
       - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
+          name: jacoco-report-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
           path: target/site/jacoco/  # Path to the JaCoCo report
 
       # Save test logs
@@ -53,7 +53,7 @@ jobs:
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
         with:
-          name: test-logs-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
+          name: test-logs-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
           path: logs/
 
       # Generate and list untested classes
@@ -76,7 +76,7 @@ jobs:
       - name: Upload Untested Classes List
         uses: actions/upload-artifact@v3
         with:
-          name: untested-classes-${{ matrix.jvm_flag | toJSON | fromJSON | replaceAll(':', '_') | replaceAll('+', '_') }}
+          name: untested-classes-${{ matrix.jvm_flag | gsub(':', '_') | gsub('\\+', '_') }}
           path: untested-classes.html
 
       # Fail if coverage has not improved
