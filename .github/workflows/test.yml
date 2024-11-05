@@ -39,7 +39,7 @@ jobs:
       - name: Run Maven tests with JVM Flag and generate coverage report
         run: |
           echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
-          mvn clean verify
+          mvn clean verify -Djacoco.agent.argLine="-javaagent:${{ env.HOME }}/.m2/repository/org/jacoco/org.jacoco.agent/0.8.8/org.jacoco.agent-0.8.8-runtime.jar=destfile=target/jacoco.exec"
         env:
           JVM_OPTS: ${{ matrix.jvm_flag }}
 
