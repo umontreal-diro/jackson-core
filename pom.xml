@@ -109,7 +109,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
-          <argLine>${jacoco.agent.argLine}</argLine>
+          <argLine>${jacoco.agent.argLine} ${additionalArgLine}</argLine>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <excludes>
             <exclude>**/failing/**/*.java</exclude>
