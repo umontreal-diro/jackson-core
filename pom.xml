@@ -29,7 +29,7 @@
   </scm>
 
   <properties>
-    <version.plugin.surefire>3.0.0-M5</version.plugin.surefire>
+    <version.plugin.surefire>2.22.2</version.plugin.surefire>
     <version.plugin.jacoco>0.8.8</version.plugin.jacoco>
     <osgi.export>com.fasterxml.jackson.core;version=${project.version}, com.fasterxml.jackson.core.*;version=${project.version}</osgi.export>
   
@@ -109,8 +109,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
-          <argLine>${jacoco.agent.argLine} ${additionalArgLine}</argLine>
+          <argLine>${jacoco.agent.argLine} -Xmx1024m</argLine>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <reuseForks>false</reuseForks>
           <excludes>
             <exclude>**/failing/**/*.java</exclude>
           </excludes>
