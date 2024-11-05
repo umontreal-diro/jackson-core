@@ -35,15 +35,11 @@ jobs:
           sanitized_flag=$(echo "${{ matrix.jvm_flag }}" | sed 's/[:+]/_/g')
           echo "sanitized_flag=$sanitized_flag" >> $GITHUB_ENV
 
-      # Display the JVM flag being used
-      - name: Display JVM Flag
-        run: |
-          echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
-
       # Run Maven tests with different JVM flags and generate JaCoCo coverage report
       - name: Run Maven tests with JVM Flag and generate coverage report
         run: |
-          mvn clean verify jacoco:report -DargLine="${{ matrix.jvm_flag }}"
+          echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
+          mvn clean verify -DargLine="${{ matrix.jvm_flag }} ${jacoco.agent.argLine}"
         env:
           JVM_OPTS: ${{ matrix.jvm_flag }}
 
@@ -98,7 +94,7 @@ jobs:
           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
 
-      - name: Fail if coverage has not improved
+      - name: Fail if coverage has not improved.
         run: |
           coverage=$COVERAGE
           threshold=81.58
