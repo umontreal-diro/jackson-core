@@ -100,7 +100,7 @@
               <goal>report-aggregate</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+              <outputDirectory>${project.build.outputDirectory}/jacoco</outputDirectory>
               <dataFile>${project.build.directory}/jacoco.exec</dataFile>
               <reports>
                 <xml>true</xml>
