@@ -39,7 +39,8 @@ jobs:
       - name: Run Maven tests with JVM Flag and generate coverage report
         run: |
           echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
-          mvn clean verify 
+          mvn clean verify
+        env:
           JVM_OPTS: ${{ matrix.jvm_flag }}
 
       # Upload JaCoCo Coverage Report as an artifact with sanitized name
