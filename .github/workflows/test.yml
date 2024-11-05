@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report-${{ env.sanitized_flag }}
-          path: target/jacoco-report/  # Path to the JaCoCo report
+          path: target/site/jacoco/  # Path to the JaCoCo report
 
       # Save test logs
       - name: Save Test Logs
