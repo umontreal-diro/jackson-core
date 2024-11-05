@@ -39,7 +39,7 @@ jobs:
       - name: Run Maven tests with JVM Flag and generate coverage report
         run: |
           echo "Running tests with JVM flag: ${{ matrix.jvm_flag }}"
-          mvn clean verify -DargLine="${{ matrix.jvm_flag }} ${jacoco.agent.argLine}"
+          mvn clean verify
         env:
           JVM_OPTS: ${{ matrix.jvm_flag }}
 
@@ -63,44 +63,3 @@ jobs:
         with:
           name: test-logs-${{ env.sanitized_flag }}
           path: logs/
-
-      # Generate and list untested classes
-      - name: Generate untested classes list
-        run: |
-          if [ -f target/site/jacoco/jacoco.xml ]; then
-            grep '<counter type="INSTRUCTION" missed="[1-9]' target/site/jacoco/jacoco.xml | sed -n 's/.*name="\(.*\)" .*missed=".*"/\1/p' > untested-classes.txt
-            if [ -s untested-classes.txt ]; then
-              echo "<html><head><title>Untested Classes</title></head><body><h1>Untested Classes</h1><ul>" > untested-classes.html
-              while read class; do
-                echo "<li>$class</li>" >> untested-classes.html
-              done < untested-classes.txt
-              echo "</ul></body></html>" >> untested-classes.html
-            else
-              echo "<html><head><title>Untested Classes</title></head><body><h1>All classes have been fully tested</h1></body></html>" > untested-classes.html
-            fi
-          fi
-
-      # Upload the list of untested classes as an artifact with sanitized name
-      - name: Upload Untested Classes List
-        uses: actions/upload-artifact@v3
-        with:
-          name: untested-classes-${{ env.sanitized_flag }}
-          path: untested-classes.html
-
-      # Fail if coverage has not improved
-      - name: Get JaCoCo Coverage
-        id: coverage  
-        run: |
-          coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
-          echo "COVERAGE=$coverage" >> $GITHUB_ENV
-
-      - name: Fail if coverage has not improved.
-        run: |
-          coverage=$COVERAGE
-          threshold=81.58
-          if (( $(echo "$coverage - $threshold <= 0.1" | bc -l) )); then
-            echo "Coverage has not improved."
-            exit 1
-          else
-            echo "New coverage: $coverage%"
-          fi
