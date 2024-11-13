@@ -14,7 +14,7 @@ jobs:
           - "-Xms512m -Xmx1024m"
           - "-XX:+UseG1GC"
           - "-XX:+UseParallelGC -XX:ParallelGCThreads=2"
-          - "-XX:+UseConcMarkSweepGC"
+          - "-XX:+UseZGC"
           - "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
