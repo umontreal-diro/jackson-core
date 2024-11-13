@@ -9,13 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-flags:
-          - ""
-          - "-Xms512m -Xmx1024m"
-          - "-XX:+UseG1GC"
-          - "-XX:+UseParallelGC -XX:ParallelGCThreads=2"
-          - "-XX:+UseConcMarkSweepGC"
-          - "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005"
+        jvm_flags: ["-Xms1024m -Xmx2048m", "-XX:+UseParallelGC", "-XX:+PrintGCDetails", "-XX:+UseAES", "-XX:+TieredCompilation"]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Set up JDK 17
@@ -25,13 +19,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Maven tests with JVM flags
-        run: mvn verify -DargLine="${{ matrix.java-flags }}"
+      - name: Run Maven tests with ${{ matrix.jvm_flags }}
+        run: mvn verify -DargLine="@{argLine} ${{ matrix.jvm_flags }}"
 
-      - name: Get JaCoCo Coverage
-        id: coverage  
+      - name: Get JaCoCo Coverage with ${{ matrix.jvm_flags }}
+        id: coverage
         run: |
-          coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
+          coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
 
       - name: Fail if coverage has not improved.
