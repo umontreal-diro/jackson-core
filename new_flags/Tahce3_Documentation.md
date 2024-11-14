@@ -18,5 +18,5 @@ Dans cette tâche, nous avons amélioré la GitHub Action pour exécuter les tes
    Cette option lance la JVM en mode débogage, ce qui permet aux développeurs de se connecter au programme en cours d’exécution sur le port 5005. Ça aide beaucoup pour repérer et corriger les problèmes en temps réel.```
 
 ### Références : 
-https://maven.apache.org/run.html
+https://maven.apache.org/run.html<br />
 https://wiki.openjdk.org/display/zgc/Main
