@@ -1,9 +1,15 @@
 # Tâche 3 - Documentation
 
-Dans cette tâche, nous avons amélioré la GitHub Action pour exécuter les tests Java avec plusieurs configurations de flags JVM intégrés dans le fichier ```test.yml```, en utilisant la commande ```mvn test```. Cela permet d’optimiser la gestion de la mémoire, les performances, la visibilité et le traitement des erreurs.
+Dans cette tâche, nous avons amélioré la GitHub Action pour exécuter les tests Java avec plusieurs configurations de flags JVM intégrés dans le fichier ```test.yml```, en utilisant la commande ```mvn test```. On a utilisé la fonctionnalité de ```matrix``` des Github Actions pour garder les 5 flags, et après on l'exécute avec ce command:
 
-### Commade de Maven Test
-```Run ./mvnw -B -q -ff -ntp verify```
+```bash
+mvn verify -DargLine="@{argLine} ${{ matrix.jvm_flags }}"
+```
+
+La motivation pour la choix des flags était:
+
+#### “Testing with JVM flags: because if the bugs don’t keep you up, tuning the GC will.”
+
 
 ## Flags
 1. ```-Xms512m -Xmx1024m``` :<br />
@@ -15,7 +21,10 @@ Dans cette tâche, nous avons amélioré la GitHub Action pour exécuter les tes
 4. ```-XX:+UseZGC``` :<br />
    Ce flag active le Z Garbage Collector, qui minimise les pauses même quand il y a beaucoup de données à gérer. Cette option s’est révélée particulièrement bénéfique pour les builds qui demandent des ressources importantes.<br />
 5. ```-Xdebug -Xrunjdwp=dt_socket,server=y,suspend=n,address=*:5005``` :<br />
-   Cette option lance la JVM en mode débogage, ce qui permet aux développeurs de se connecter au programme en cours d’exécution sur le port 5005. Ça aide beaucoup pour repérer et corriger les problèmes en temps réel.```
+   Cette option lance la JVM en mode débogage, ce qui permet aux développeurs de se connecter au programme en cours d’exécution sur le port 5005. Ça aide beaucoup pour repérer et corriger les problèmes en temps réel.
+
+### Obs :
+Le code ne s'exécutait pas correctement, nous avons donc dû apporter quelques ajustements dans le fichier `pom.xml`. Plus précisément, nous avons supprimé `SNAPSHOT` des lignes 11 et 16.
 
 ### Références : 
 https://maven.apache.org/run.html<br />
