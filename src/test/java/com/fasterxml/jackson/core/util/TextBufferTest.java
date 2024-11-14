@@ -236,4 +236,22 @@ class TextBufferTest
         textBuffer.resetWithString("1.234567890123456789");
         assertEquals(1.234567890123456789d,  textBuffer.contentsAsDouble(true));
     }
+   
+    /*
+     * Ce test vérifie que l'opération d'expansion de segment de TextBuffer fonctionne
+     * correctement et que le buffer peut gérer des besoins de mémoire croissants
+     */
+    @Test
+    void testExpandCurrentSegment() throws Exception {
+        
+        // arrange
+        TextBuffer text_buffer = new TextBuffer(new BufferRecycler());
+        char[] current_segment = text_buffer.emptyAndGetCurrentSegment();
+        int min_size = current_segment.length * 2;
+        // act
+        char[] resulting_segment = text_buffer.expandCurrentSegment(min_size);
+        // assert
+        assertNotNull(resulting_segment);
+        assertTrue(resulting_segment.length >= min_size);
+    }
 }

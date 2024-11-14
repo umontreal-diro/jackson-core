@@ -1,9 +1,11 @@
 package com.fasterxml.jackson.core.format;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 
 import org.junit.jupiter.api.Test;
 
@@ -71,4 +73,41 @@ class DataFormatMatcherTest extends com.fasterxml.jackson.core.JUnit5TestBase
       // regardless, we should be able to use `toString()`
       assertNotNull(df0.toString());
   }
+
+  // Ce test nous assure que la méthode getMatchedFormatName retourne NULL lorsqu'il n'y a pas de correspondance
+  @Test
+  void getMatchedFormatNameReturnsNullWhenNoMatch() {
+      // Arrange
+      byte[] test = new byte[]{1, 2, 3};
+
+      // Act
+      DataFormatMatcher matcher = new DataFormatMatcher(
+              null,
+              test,
+              0,
+              3,
+              null,
+              null
+      );
+
+      // Assert
+      assertEquals(MatchStrength.INCONCLUSIVE, matcher.getMatchStrength());
+  }
+
+  // Ce test nous assure que la méthode createParserWithMatch retourne NULL en absence d'une correspondance
+  @Test
+    void testCreateParserWhenNoMatch() throws IOException {
+        DataFormatMatcher matcher = new DataFormatMatcher(
+                null,
+                new byte[]{},
+                0,
+                0,
+                null,
+                null
+        );
+
+        JsonParser parser = matcher.createParserWithMatch();
+        assertNull(parser);
+    }
+
 }

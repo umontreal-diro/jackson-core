@@ -7,6 +7,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-flags:
+          - ""
+          - "-Xms512m -Xmx1024m"
+          - "-XX:+UseG1GC"
+          - "-XX:+UseParallelGC -XX:ParallelGCThreads=2"
+          - "-XX:+UseZGC"
+          - "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Set up JDK 17
@@ -16,8 +25,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Maven tests
-        run: mvn verify
+      - name: Run Maven tests with JVM flags
+        run: mvn verify -DargLine="@{argLine} ${{ matrix.jvm_flags }}"
 
       - name: Get JaCoCo Coverage
         id: coverage  
